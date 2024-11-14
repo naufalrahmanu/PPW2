@@ -10,14 +10,16 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginRegisterController extends Controller
 {
+
+    protected $middleware = [];
+    protected $except = [];
     /**
      * instantiate a new login 
      */
     public function __construct()
     {
-        $this->middleware('guest')->except([
-            'logout','dashboard'
-        ]);
+        $this->middleware = 'guest'; // Define the middleware property
+        $this->except = ['logout','dashboard']; // Define the except property
     }
 
     /**
@@ -73,41 +75,38 @@ class LoginRegisterController extends Controller
      * 
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
 
     public function auth(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('dashboard')
-                ->withSuccess('success', 'You have successfully logged in.');
+            return redirect()->route('dashboard')->withSuccess('You have successfully logged in!');
         }
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+
+        return back()->withErrors(['email' => 'Your provided credentials do not match in our records.',])->onlyInput('email');
     }
 
     /**
      * 
      * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      * 
      */
 
     public function dashboard()
     {
         if (Auth::check()) {
-            return response()->view('dashboard');
+            return response()->view('auth.dashboard');
+        } else {
+            abort(403);
         }
-
-        return redirect()->route('login')
-        ->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
     }
 
     /**

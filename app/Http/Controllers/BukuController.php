@@ -12,7 +12,7 @@ class BukuController extends Controller
     {
         $data_buku = Buku::all();
 
-        return view('index', compact('data_buku'));
+        return view('buku.index', compact('data_buku'));
     }
 
 

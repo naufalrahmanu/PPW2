@@ -8,7 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/buku',[App\Http\Controllers\BukuController::class,'index']) ;
+Route::get('/buku',[App\Http\Controllers\BukuController::class,'index'])->name('buku.index'); ; 
 Route::get('/buku/tambah',[BukuController::class,'create'])->name('buku.create');
 Route::delete('/buku/hapus/{id}',[BukuController::class,'destroy'])->name('buku.destroy');
 Route::get('/buku/edit/{id}',[BukuController::class,'edit'])->name('buku.edit');

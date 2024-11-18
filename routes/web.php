@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\Auth\LoginRegisterController;
+use App\Http\Controllers\UserController;
+
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\CustomAuthRedirect;
 use App\Http\Middleware\CheckAge;
+
 
 
 Route::get('/', function () {
@@ -34,6 +37,10 @@ Route::middleware([CustomAuthRedirect::class, Admin::class])->group(function () 
     Route::get('/buku/edit/{id}',[BukuController::class,'edit'])->name('buku.edit');
     Route::put('/buku/update/{id}',[BukuController::class,'update'])->name('buku.update');
     Route::post('/buku/store',[BukuController::class,'store'])->name('buku.store');
+
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 });
 
 Route::get('restricted', function () {

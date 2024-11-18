@@ -7,6 +7,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class LoginRegisterController extends Controller
 {
@@ -45,14 +48,39 @@ class LoginRegisterController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100|unique:users',
             'password' => 'required|min:8|confirmed',
+            'photo' => 'image|nullable|max:10000',
 
         ]);
+
+        if ($request->hasFile('photo')) {
+            $manager = new ImageManager(new Driver());
+            $filenameWithExt = $request->file('photo')->getClientOriginalName();
+            $path = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $extension = $request->file('photo')->getClientOriginalExtension();
+            $filename = $path . '_' . time();
+            // Save original image
+            $filenameOriginal = $filename . '_Original.' . $extension;
+            $request->file('photo')->storeAs('images/users/original', $filenameOriginal);
+            // Create and save square image
+            $squareImage = $manager->read($request->file('photo')->path());
+            $smallestDimension = min($squareImage->width(), $squareImage->height());
+            $squareImage->crop($smallestDimension, $smallestDimension, ($squareImage->width() - $smallestDimension) / 2, ($squareImage->height() - $smallestDimension) / 2);
+            $squareImage->save(storage_path('app/public/images/users/square/' . $filename . '_Square.' . $extension));
+            // Create and save thumbnail
+            $thumbnailImage = $squareImage->scale(width: 100)->toJpeg();
+            $thumbnailImage->save(storage_path('app/public/images/users/thumbnail/' . $filename . '_Thumbnail.' . $extension));
+        } else {
+            $filename = null;
+            $extension = null;
+        }
 
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'level' => 'public',
+            'level' => 'admin',
+            'photo' => $filename,
+            'photo_ext' => $extension,
         ]);
 
         $credentials = $request->only('email', 'password');

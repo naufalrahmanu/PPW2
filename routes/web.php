@@ -4,6 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\Auth\LoginRegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\InfoController;
+use App\Http\Controllers\GreetController;
+
 
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\CustomAuthRedirect;
@@ -41,6 +44,10 @@ Route::middleware([CustomAuthRedirect::class, Admin::class])->group(function () 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+
+   
+
+
 });
 
 Route::get('restricted', function () {

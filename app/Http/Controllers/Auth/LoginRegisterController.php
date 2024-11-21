@@ -65,14 +65,15 @@ class LoginRegisterController extends Controller
             $squareImage = $manager->read($request->file('photo')->path());
             $smallestDimension = min($squareImage->width(), $squareImage->height());
             $squareImage->crop($smallestDimension, $smallestDimension, ($squareImage->width() - $smallestDimension) / 2, ($squareImage->height() - $smallestDimension) / 2);
-            $squareImage->save(storage_path('app/public/images/users/square/' . $filename . '_Square.' . $extension));
+            $squareImage->save(storage_path("app/public/images/users/square/{$filename}_Square.{$extension}"));
             // Create and save thumbnail
             $thumbnailImage = $squareImage->scale(width: 100)->toJpeg();
-            $thumbnailImage->save(storage_path('app/public/images/users/thumbnail/' . $filename . '_Thumbnail.' . $extension));
+            $thumbnailImage->save(storage_path("app/public/images/users/thumbnail/{$filename}_Thumbnail.{$extension}"));
         } else {
             $filename = null;
             $extension = null;
         }
+        
 
         User::create([
             'name' => $request->name,

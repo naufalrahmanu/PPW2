@@ -9,4 +9,12 @@ class Buku extends Model
 {
     use HasFactory;
     protected $table = 'books';
+
+    protected $fillable = [
+        'judul',
+        'penulis',
+        'harga',
+        'tanggal_terbit',
+        'picture',
+    ];
 }

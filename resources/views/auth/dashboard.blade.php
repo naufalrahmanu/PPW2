@@ -11,6 +11,8 @@
                 Halo, {{ Auth::user()->name }}
 
                 <a class="btn btn-primary d-block mt-3" href="{{ route('buku.index') }}">Daftar buku</a>
+
+                <a class="btn btn-danger d-block mt-3" href="{{ route('logout') }}">Logout</a>
             </div>
         </div>
     </div>

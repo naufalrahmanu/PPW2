@@ -21,6 +21,7 @@
                   <th>Penulis</th>
                   <th>Harga</th>
                   <th>Tanggal Terbit</th>
+                  <th>Gambar</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -32,6 +33,13 @@
                   <td>{{ $buku->penulis }}</td>
                   <td>{{ "Rp. ".number_format($buku->harga, 2,',','.')}}</td>
                   <td>{{ $buku->tanggal_terbit }}</td>
+                  <td>
+                    @if (is_null($buku->picture))
+                      Not Available
+                      @else
+                      <img src="{{ asset('storage/images/'.$buku->picture) }}" width="300" alt="Gambar Buku">
+                    @endif
+                  </td>
                   <td>
                     <form action="{{ route('buku.destroy', $buku->id) }}" method="POST">
                       @csrf

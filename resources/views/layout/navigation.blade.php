@@ -32,6 +32,10 @@
                         </a>
 
                         <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">Edit
+                                    Profile</a>
+                            </li>
                             <li>
                                 <a class="dropdown-item" href="{{ route('users.index') }}">Profile</a>
                             </li>

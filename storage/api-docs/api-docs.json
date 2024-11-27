@@ -14,6 +14,51 @@
         "version": "0.0.1"
     },
     "paths": {
+        "/api/gallery": {
+            "get": {
+                "tags": [
+                    "Gallery"
+                ],
+                "summary": "Retrieve gallery data",
+                "description": "Fetch all gallery data as JSON",
+                "operationId": "9f04eba8f10637da7f41b33254912b00",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "image_url": {
+                                                "type": "string"
+                                            },
+                                            "description": {
+                                                "type": "string"
+                                            },
+                                            "created_at": {
+                                                "type": "string"
+                                            },
+                                            "updated_at": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/greet": {
             "get": {
                 "tags": [
@@ -51,6 +96,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Gallery",
+            "description": "Gallery"
+        },
         {
             "name": "greeting",
             "description": "greeting"

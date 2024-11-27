@@ -7,6 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\InfoController;
 use App\Http\Controllers\GreetController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\SendEmailController;
+
+
 
 
 use App\Http\Middleware\Admin;
@@ -47,6 +50,16 @@ Route::middleware([CustomAuthRedirect::class, Admin::class])->group(function () 
     Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 
     Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/galeri/tambah', [GalleryController::class, 'create'])->name('gallery.create');
+    Route::delete('/galeri/hapus/{id}', [GalleryController::class, 'destroy'])->name('gallery.destroy');
+    Route::get('/galeri/edit/{id}', [GalleryController::class, 'edit'])->name('gallery.edit');
+    Route::put('/galeri/update/{id}', [GalleryController::class, 'update'])->name('gallery.update');
+    Route::post('/galeri/store', [GalleryController::class, 'store'])->name('gallery.store');
+
+    
+
+    Route::get('/send-email', [SendEmailController::class, 'index'])->name('send-email.index');
+    Route::post('/send-email', [SendEmailController::class, 'sendEmail'])->name('send-email.send');
 
    
 

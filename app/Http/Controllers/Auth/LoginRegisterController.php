@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SendEmailController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Mail\SendEmail;
 
 class LoginRegisterController extends Controller
 {
@@ -87,6 +89,14 @@ class LoginRegisterController extends Controller
         $credentials = $request->only('email', 'password');
         Auth ::attempt($credentials);
         $request->session()->regenerate();
+
+        $registerEmail = [
+            'name' => $request->name,
+            'email' => $request->email,
+            'subject' => 'Registration Successful',
+        ];
+
+        dispatch(new SendEmail($registerEmail));
 
         return redirect()->route('dashboard')
             ->withSuccess('success', 'You have successfully registered.');

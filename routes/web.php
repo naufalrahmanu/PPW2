@@ -60,6 +60,7 @@ Route::middleware([CustomAuthRedirect::class, Admin::class])->group(function () 
 
     Route::get('/send-email', [SendEmailController::class, 'index'])->name('send-email.index');
     Route::post('/send-email', [SendEmailController::class, 'sendEmail'])->name('send-email.send');
+    
 
    
 
